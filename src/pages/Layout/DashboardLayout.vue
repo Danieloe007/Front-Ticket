@@ -7,6 +7,14 @@
       :sidebar-background-image="sidebarBackgroundImage"
     >
       <mobile-menu slot="content"></mobile-menu>
+      <sidebar-link to="/loggin">
+        <md-icon>person</md-icon>
+        <p>Loggin</p>
+      </sidebar-link>
+      <sidebar-link to="/Register">
+        <md-icon>person</md-icon>
+        <p>Registro</p>
+      </sidebar-link>
       <sidebar-link to="/dashboard">
         <md-icon>dashboard</md-icon>
         <p>Dashboard</p>
@@ -19,10 +27,7 @@
         <md-icon>content_paste</md-icon>
         <p>Table list</p>
       </sidebar-link>
-      <sidebar-link to="/typography">
-        <md-icon>library_books</md-icon>
-        <p>Typography</p>
-      </sidebar-link>
+     
       <sidebar-link to="/icons">
         <md-icon>bubble_chart</md-icon>
         <p>Icons</p>
@@ -63,6 +68,7 @@ import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
 import MobileMenu from "@/pages/Layout/MobileMenu.vue";
 import FixedPlugin from "./Extra/FixedPlugin.vue";
+
 
 export default {
   components: {

@@ -98,9 +98,13 @@ import Vue from "vue";
 import SocialSharing from "vue-social-sharing";
 import VueGitHubButtons from "vue-github-buttons";
 import "vue-github-buttons/dist/vue-github-buttons.css";
+import Vuex from 'vuex';
+Vue.use(Vuex);
+
 
 Vue.use(SocialSharing);
 Vue.use(VueGitHubButtons, { useCache: true });
+
 export default {
   components: { SocialSharing },
   data() {
@@ -151,6 +155,19 @@ export default {
       this.toggleList(this.sidebarImages, item);
     },
   },
+  state: {
+    userData: null
+  },
+  mutations: {
+    SET_USER_DATA(state, userData) {
+      state.userData = userData;
+    }
+  },
+  actions: {
+    setUserData({ commit }, userData) {
+      commit('SET_USER_DATA', userData);
+    }
+  }
 };
 </script>
 <style>
