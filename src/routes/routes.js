@@ -11,6 +11,7 @@ import Notifications from "@/pages/Notifications.vue";
 import UpgradeToPRO from "@/pages/UpgradeToPRO.vue";
 import Register from "@/pages/Register.vue";
 import auth from '@/logic/auth' 
+import Cookies from 'js-cookie';
 
 
 Vue.use(VueRouter);
@@ -96,16 +97,40 @@ const router = new VueRouter({
   routes
 });
 
+function isTokenExpired(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  const payload = JSON.parse(jsonPayload);
+  const expirationDate = new Date(payload.exp * 1000);
+
+  return expirationDate < new Date();
+}
+
 router.beforeEach((to, from, next) => {
-
-
-  if (to.matched.some(record => record.meta.requiresAuth) && !auth.isLoggedIn()) {   
-    next({
-      path: '/loggin',
-      query: { redirect: to.fullPath }
-    });
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // Obtén el usuario y el token de la cookie
+    const userLogged = Cookies.get('userLogged');
+    if (userLogged) {
+      const user = JSON.parse(userLogged);
+      if (user && user.token) {
+        // Comprueba si el token está vencido
+        if (!isTokenExpired(user.token)) {
+          next();
+        } else {
+          next({ path: '/loggin', query: { redirect: to.fullPath } });
+        }
+      } else {
+        next({ path: '/loggin', query: { redirect: to.fullPath } });
+      }
+    } else {
+      next({ path: '/loggin', query: { redirect: to.fullPath } });
+    }
   } else {
-    next();
+    next();  // Si la ruta no requiere autenticación, sigue adelante
   }
 });
 export default router;

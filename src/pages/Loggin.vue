@@ -81,7 +81,7 @@ export default {
     auth.setUserLogged(userJSON); 
     const userLogged = auth.getUserLogged();
     const userLoggedObject = JSON.parse(userLogged);
-    console.log(userLoggedObject.idEmpresa);
+    console.log(userLoggedObject.token);
 
     this.$router.push("/dashboard");
   } catch (error) {
